@@ -14,6 +14,10 @@ services:
     image: ovelayos/docker-registry-ui-wd-ex4100:2.6.0-bullseye
     container_name: registry-ui
     restart: unless-stopped
+    # Docker 19.03.8 seccomp returns EPERM for clock_gettime64 and glibc does
+    # not fall back, so nginx served "Date: 1970". LAN-only, filter dropped.
+    security_opt:
+      - seccomp=unconfined
     ports:
       - "5005:80"
     environment:
